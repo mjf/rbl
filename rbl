@@ -56,6 +56,9 @@ report() {
 		'BlackList')
 			printf -- '%-15s ' "$(shorten 15 "${OKIND[2]:-$3}")"
 			;;
+		'InformativeList')
+			printf -- '%-15s ' "$(shorten 15 "${OKIND[3]:-$3}")"
+			;;
 		*)
 			printf -- '%-15s ' "$(shorten 15 "$3")"
 			;;
@@ -230,6 +233,9 @@ while [ $# -gt 0 ]; do
 		'-okind:BlackList:'?*)
 			OKIND[2]="${OPTION#-okind:BlackList:}"
 			;;
+		'-okind:InformativeList:'?*)
+			OKIND[3]="${OPTION#-okind:InformativeList:}"
+			;;
 		*)
 			shift
 			[ $# -lt 1 ] && error 'option -o requires an argument'
@@ -242,6 +248,9 @@ while [ $# -gt 0 ]; do
 				;;
 			'kind:BlackList'?*)
 				OKIND[2]="${1#kind:BlackList:}"
+				;;
+			'kind:InformativeList'?*)
+				OKIND[3]="${1#kind:InformativeList:}"
 				;;
 			esac
 		esac
