@@ -47,7 +47,7 @@ report() {
 	printf -- '%-23s ' "$(shorten 23 "$1")"
 	printf -- '%-15s ' "$(shorten 15 "$2")"
 	case "$3" in
-		'BlackList')
+		'BlackholeList')
 			printf -- '%-15s ' "$(shorten 15 "${OKIND[0]:-$3}")"
 			;;
 		'BlockList')
@@ -135,7 +135,7 @@ proceed() {
 				'ReputationList')
 					sed 's/^/\x1b[43;30m/;s/$/\x1b[m/'
 					;;
-				'BlackList' | 'BlockList' | 'BlackList')
+				'BlackholeList' | 'BlockList' | 'BlackList')
 					sed 's/^/\x1b[41;37m/;s/$/\x1b[m/'
 					;;
 				esac
@@ -221,8 +221,8 @@ while [ $# -gt 0 ]; do
 		;;
 	'-o'*)
 		case "$OPTION" in
-		'-okind:BlackList:'?*)
-			OKIND[0]="${OPTION#-okind:BlackList:}"
+		'-okind:BlackholeList:'?*)
+			OKIND[0]="${OPTION#-okind:BlackholeList:}"
 			;;
 		'-okind:BlockList:'?*)
 			OKIND[1]="${OPTION#-okind:BlockList:}"
@@ -234,8 +234,8 @@ while [ $# -gt 0 ]; do
 			shift
 			[ $# -lt 1 ] && error 'option -o requires an argument'
 			case "$1" in
-			'kind:BlackList'?*)
-				OKIND[0]="${1#kind:BlackList:}"
+			'kind:BlackholeList'?*)
+				OKIND[0]="${1#kind:BlackholeList:}"
 				;;
 			'kind:BlockList'?*)
 				OKIND[1]="${1#kind:BlockList:}"
