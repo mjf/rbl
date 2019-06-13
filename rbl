@@ -13,7 +13,7 @@ alias -- 'type:'='type'
 
 usage() {
 	cat <<- EOT
-	usage: $PROGRAM -h | -f <file> <host>[,<host>...]
+	usage: $PROGRAM -h | -f<file> <host>[,<host>...] [-o<field>:<value>:<value>]
 	EOT
 	exit
 }
@@ -46,7 +46,20 @@ response_domain_text() {
 report() {
 	printf -- '%-23s ' "$(shorten 23 "$1")"
 	printf -- '%-15s ' "$(shorten 15 "$2")"
-	printf -- '%-15s ' "$(shorten 15 "$3")"
+	case "$3" in
+		'BlackList')
+			printf -- '%-15s ' "$(shorten 15 "${OKIND[0]:-$3}")"
+			;;
+		'BlockList')
+			printf -- '%-15s ' "$(shorten 15 "${OKIND[1]:-$3}")"
+			;;
+		'BlackList')
+			printf -- '%-15s ' "$(shorten 15 "${OKIND[2]:-$3}")"
+			;;
+		*)
+			printf -- '%-15s ' "$(shorten 15 "$3")"
+			;;
+	esac
 	printf -- '%-15s ' "$(shorten 15 "$4")"
 	printf -- '%-07s ' "$(shorten 07 "$5")"
 	printf -- '%-15s ' "$(shorten 15 "$6")"
@@ -57,7 +70,16 @@ report() {
 }
 
 report_header() {
-	report HOST TYPE KIND NAME STATUS RESPONSE |
+	{
+		printf -- '%-23s ' 'HOST'
+		printf -- '%-15s ' 'TYPE'
+		printf -- '%-15s ' 'KIND'
+		printf -- '%-15s ' 'NAME'
+		printf -- '%-07s ' 'STATUS'
+		printf -- '%-15s ' 'RESPONSE'
+		printf -- '\n'
+	} |
+
 	sed 's/^/\x1b[46;37;1m/;s/$/\x1b[m/'
 }
 
@@ -113,7 +135,7 @@ proceed() {
 				'ReputationList')
 					sed 's/^/\x1b[43;30m/;s/$/\x1b[m/'
 					;;
-				'BlackList')
+				'BlackList' | 'BlockList' | 'BlackList')
 					sed 's/^/\x1b[41;37m/;s/$/\x1b[m/'
 					;;
 				esac
@@ -195,6 +217,33 @@ while [ $# -gt 0 ]; do
 			[ $# -lt 1 ] && error 'option -f requires an argument'
 			FILES=( ${FILES[@]} $1 )
 			;;
+		esac
+		;;
+	'-o'*)
+		case "$OPTION" in
+		'-okind:BlackList:'?*)
+			OKIND[0]="${OPTION#-okind:BlackList:}"
+			;;
+		'-okind:BlockList:'?*)
+			OKIND[1]="${OPTION#-okind:BlockList:}"
+			;;
+		'-okind:BlackList:'?*)
+			OKIND[2]="${OPTION#-okind:BlackList:}"
+			;;
+		*)
+			shift
+			[ $# -lt 1 ] && error 'option -o requires an argument'
+			case "$1" in
+			'kind:BlackList'?*)
+				OKIND[0]="${1#kind:BlackList:}"
+				;;
+			'kind:BlockList'?*)
+				OKIND[1]="${1#kind:BlockList:}"
+				;;
+			'kind:BlackList'?*)
+				OKIND[2]="${1#kind:BlackList:}"
+				;;
+			esac
 		esac
 		;;
 	'-h')
