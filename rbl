@@ -1,0 +1,230 @@
+#! /bin/sh
+
+PROGRAM="${0##*/}"
+
+alias -- '---'='proceed'
+alias -- 'kind:'='kind'
+alias -- 'metadata:'='metadata'
+alias -- 'spec:'='spec'
+alias -- 'description:'='description'
+alias -- 'name:'='name'
+alias -- 'zone:'='zone'
+alias -- 'type:'='type'
+
+usage() {
+	cat <<- EOT
+	usage: $PROGRAM -h | -f <file> <host>[,<host>...]
+	EOT
+	exit
+}
+
+shorten() {
+	sed "s/\(.\{$1\}\).*/\1/" <<< "$2"
+}
+
+response_address() {
+	IFS=. read O1 O2 O3 O4 <<< "$1"
+	dig IN A +short "$O4.$O3.$O2.$O1.$SPEC_ZONE"
+}
+
+response_address_text() {
+	IFS=. read O1 O2 O3 O4 <<< "$1"
+	dig IN TXT +short "$O4.$O3.$O2.$O1.$SPEC_ZONE" |
+	sed 's/^"//;s/"$//'
+}
+
+response_domain() {
+	dig IN A +short "$1.$SPEC_ZONE"
+}
+
+response_domain_text() {
+	IFS=. read O1 O2 O3 O4 <<< "$1"
+	dig IN TXT +short "$1.$SPEC_ZONE" |
+	sed 's/^"//;s/"$//'
+}
+
+report() {
+	printf -- '%-23s ' "$(shorten 23 "$1")"
+	printf -- '%-15s ' "$(shorten 15 "$2")"
+	printf -- '%-15s ' "$(shorten 15 "$3")"
+	printf -- '%-15s ' "$(shorten 15 "$4")"
+	printf -- '%-07s ' "$(shorten 07 "$5")"
+	printf -- '%-15s ' "$(shorten 15 "$6")"
+	printf -- '\n'
+	[ "$7" ] && {
+		printf -- '% 23s %-72s\n' '' "$7"
+	}
+}
+
+report_header() {
+	report HOST TYPE KIND NAME STATUS RESPONSE |
+	sed 's/^/\x1b[46;37;1m/;s/$/\x1b[m/'
+}
+
+proceed() {
+	[ "$KIND" -a "$METADATA_NAME" -a "$SPEC_ZONE" ] && {
+		case "$HOST" in
+		*.[0-9]*)
+			ADDRESSES=( $HOST )
+			;;
+		?*)
+			case $SPEC_TYPE in
+			'Address')
+				ADDRESSES=( $(dig IN A +short $HOST) )
+				;;
+			'Domain')
+				ADDRESSES=( $HOST )
+				;;
+			esac
+			;;
+		esac
+		for ADDRESS in ${ADDRESSES[@]}; do
+			case $SPEC_TYPE in
+			'Address')
+				RESPONSE=$(response_address $ADDRESS)
+				RESPONSE_TEXT=$(response_address_text $ADDRESS)
+				;;
+			'Domain')
+				RESPONSE=$(response_domain $ADDRESS)
+				RESPONSE_TEXT=$(response_domain_text $ADDRESS)
+				;;
+			esac
+
+			case "$RESPONSE" in
+			'127.0.'?*)
+				STATUS='Listed'
+				;;
+			'')
+				STATUS='Clean'
+				;;
+			?*)
+				STATUS='Unknown'
+				;;
+			esac
+
+			report "$HOST" "$SPEC_TYPE" "$KIND" "$METADATA_NAME" "$STATUS" "$RESPONSE" "$RESPONSE_TEXT" |
+
+			case "$STATUS" in
+			'Listed')
+				case "$KIND" in
+				'InformativeList')
+					sed 's/^/\x1b[44;37m/;s/$/\x1b[m/'
+					;;
+				'ReputationList')
+					sed 's/^/\x1b[43;30m/;s/$/\x1b[m/'
+					;;
+				'BlackList')
+					sed 's/^/\x1b[41;37m/;s/$/\x1b[m/'
+					;;
+				esac
+				;;
+			*)
+				sed 's/^/\x1b[47;30m/;s/$/\x1b[m/'
+				;;
+			esac
+		done
+	}
+
+	unset NODE
+	unset KIND
+	unset METADATA_DESCRIPTION
+	unset METADATA_NAME
+	unset SPEC_ZONE
+
+	SPEC_TYPE=$SPEC_TYPE_DEFAULT
+}
+
+kind() {
+	KIND="$@"
+}
+
+metadata() {
+	NODE='METADATA'
+}
+
+spec() {
+	NODE='SPEC'
+}
+
+description() {
+	case "$NODE" in
+	'METADATA')
+		METADATA_DESCRIPTION="$@"
+		;;
+	esac
+}
+name() {
+	case "$NODE" in
+	'METADATA')
+		METADATA_NAME="$@"
+		;;
+	esac
+}
+
+zone() {
+	case "$NODE" in
+	'SPEC')
+		SPEC_ZONE="$@"
+		;;
+	esac
+}
+
+type() {
+	case "$NODE" in
+	'SPEC')
+		SPEC_TYPE="$@"
+		;;
+	esac
+}
+
+error() {
+	echo "$PROGRAM: $@" >&2
+	exit 1
+}
+
+while [ $# -gt 0 ]; do
+	OPTION="$1"
+	case "$OPTION" in
+	'-f'*)
+		case "$OPTION" in
+		'-f'?*)
+			FILES=( ${FILES[@]} ${OPTION#-f} )
+			;;
+		*)
+			shift
+			[ $# -lt 1 ] && error 'option -f requires an argument'
+			FILES=( ${FILES[@]} $1 )
+			;;
+		esac
+		;;
+	'-h')
+		usage
+		;;
+	?*)
+		case "$OPTION" in
+		*','*)
+			HOSTS=( ${HOSTS[@]} ${OPTION//,/ } )
+			;;
+		*)
+			HOSTS=( ${HOSTS[@]} $OPTION )
+			;;
+		esac 
+		;;
+	esac
+	shift
+done
+
+[ ${#FILES[@]} -eq 0 ] && error 'source file(s) required'
+[ ${#HOSTS[@]} -eq 0 ] && error 'host(s) required'
+
+SPEC_TYPE_DEFAULT='Address'
+SPEC_TYPE=$SPEC_TYPE_DEFAULT
+
+for HOST in ${HOSTS[@]}; do
+	report_header
+	for FILE in ${FILES[@]}; do
+		source "$PWD/$FILE"
+	done
+	proceed
+	echo
+done

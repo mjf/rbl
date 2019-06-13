@@ -1,0 +1,209 @@
+# kind: BlackList | WhiteList | YellowList | GreyList | NoBLList | ReputationList
+# spec.type: Domain | Address (default)
+---
+kind: BlackList
+metadata:
+  description: The Spamhaus SBL Advisory
+  name: spamhaus-sbl
+spec:
+  zone: sbl.spamhaus.com
+---
+kind: BlackList
+metadata:
+  description: The Spamhaus PBL Advisory
+  name: spamhaus-pbl
+spec:
+  zone: pbl.spamhaus.com
+---
+kind: BlackList
+metadata:
+  description: The Spamhaus XBL Advisory
+  name: spamhaus-xbl
+spec:
+  zone: xbl.spamhaus.com
+---
+kind: BlackList
+metadata:
+  description: The Spamhaus Zen Block List
+  name: spamhaus-zen
+spec:
+  zone: zen.spamhaus.com
+---
+kind: BlackList
+metadata:
+  description: The Spamhaus DBL Advisory
+  name: spamhaus-dbl
+spec:
+  zone: dbl.spamhaus.com
+  type: Domain
+---
+kind: BlackList
+metadata:
+  description: The SpamCop Block List
+  name: scbl
+spec:
+  zone: bl.spamcop.net
+---
+kind: BlackList
+metadata:
+  description: The Passive Block List
+  name: psbl
+spec:
+  zone: psbl.surriel.com
+---
+kind: BlackList
+metadata:
+  description: The BarracudaCentral Block List
+  name: barracuda
+spec:
+  zone: b.barracudacentral.org
+---
+kind: BlackList
+metadata:
+  description: The Lashback\'s Block List
+  name: unsubscore
+spec:
+  zone: ubl.unsubscore.com
+---
+kind: BlackList
+metadata:
+  description: The UCEPROTECT Level 1 Block List
+  name: uceprotect-l1
+spec:
+  zone: dnsbl-1.uceprotect.net
+---
+kind: BlackList
+metadata:
+  description: The UCEPROTECT Level 2 Block List
+  name: uceprotect-l2
+spec:
+  zone: dnsbl-2.uceprotect.net
+---
+kind: BlackList
+metadata:
+  description: The UCEPROTECT Level 3 Block List
+  name: uceprotect-l3
+spec:
+  zone: dnsbl-3.uceprotect.net
+---
+kind: BlackList
+metadata:
+  description: The Composite Block List
+  name: cbl
+spec:
+  zone: cbl.abuseat.org
+---
+kind: BlackList
+metadata:
+  description: The SenderScore Block List
+  name: scbl
+spec:
+  zone: bl.score.senderscore.com
+---
+kind: ReputationList
+metadata:
+  description: The Sender Score Reputation List
+  name: scbl-rep
+spec:
+  zone: score.senderscore.com
+---
+kind: BlackList
+metadata:
+  description: The Spam Eating Monkey Block List
+  name: sembl
+spec:
+  zone: bl.spameatingmonkey.net
+---
+kind: BlackList
+metadata:
+  description: The ARM Research Labs GDUdb Block List
+  name: truncate
+spec:
+  zone: truncate.gbudb.net
+---
+kind: BlackList
+metadata:
+  description: The SORBS Aggregated Block List
+  name: sorbs-dnsbl
+spec:
+  zone: dnsbl.sorbs.net
+---
+kind: BlackList
+metadata:
+  description: The SORBS DBL
+  name: sorbs-rhsbl
+spec:
+  zone: rhsbl.sorbs.net
+  type: Domain
+---
+kind: BlackList
+metadata:
+  description: The NordSpam Project Block List
+  name: nordspam-bl
+spec:
+  zone: bl.nordspam.com
+---
+kind: BlackList
+metadata:
+  description: The NordSpam Project Domain Block List
+  name: nordspam-dbl
+spec:
+  zone: dbl.nordspam.com
+  type: Domain
+---
+kind: BlackList
+metadata:
+  description: The Team Cymru Bogons Block List
+  name: cymru-bogons
+spec:
+  zone: bogons.cymru.com
+---
+kind: BlackList
+metadata:
+  description: The Team Cymru Full Bogons Block List
+  name: cymru-fullbogons
+spec:
+  zone: v4.fullbogons.cymru.com
+---
+kind: BlackList
+metadata:
+  description: The Host Karma Block List
+  name: hostkarma
+spec:
+  zone: black.junkemailfilter.com
+---
+kind: BlackList
+metadata:
+  description: The Host Karma Block List
+  name: hostkarma-dbl
+spec:
+  zone: black.junkemailfilter.com
+  type: Domain
+---
+kind: BlackList
+metadata:
+  description: The Just Spam Block List
+  name: justspam
+spec:
+  zone: dnsbl.justspam.org
+---
+kind: BlackList
+metadata:
+  description: The Mail Spike Block List
+  name: mailspike
+spec:
+  zone: bl.mailspike.net
+---
+kind: BlackList
+metadata:
+  description: The Mail Spike Zero-hour Block List
+  name: mailspike-0h
+spec:
+  zone: z.mailspike.net
+---
+kind: BlackList
+metadata:
+  description: The Mega RBL Block List
+  name: megarbl
+spec:
+  zone: rbl.megarbl.net
