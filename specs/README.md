@@ -29,7 +29,7 @@ spec:
 ---
 kind: BlackList
 metadata:
-  description: The Spamhaus SBL Advisory
+  description: "The Spamhaus SBL Advisory"
   name: SPAMHAUS-SBL
 spec:
   queryZone: sbl.spamhaus.com
@@ -39,11 +39,11 @@ spec:
 
 ## Example
 
-```shell
+```sh
 service
   kind BlackList
   metadata
-    description The Spamhaus SBL Advisory
+    description "The Spamhaus SBL Advisory"
     name SPAMHAUS-SBL
   spec
     queryZone sbl.spamhaus.com
