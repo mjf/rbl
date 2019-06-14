@@ -2,13 +2,13 @@
 
 PROGRAM="${0##*/}"
 
-alias -- '---'='proceed'
+alias -- '---'='service'
 alias -- 'kind:'='kind'
 alias -- 'metadata:'='metadata'
 alias -- 'spec:'='spec'
 alias -- 'description:'='description'
 alias -- 'name:'='name'
-alias -- 'zone:'='zone'
+alias -- 'queryZone:'='zone'
 alias -- 'type:'='type'
 
 usage() {
@@ -63,6 +63,12 @@ report() {
 		'InformativeList')
 			printf -- '%-15s ' "$(truncate 15 "${OKIND[3]:-$3}")"
 			;;
+		'InformationalList')
+			printf -- '%-15s ' "$(truncate 15 "${OKIND[4]:-$3}")"
+			;;
+		'ReputationList')
+			printf -- '%-15s ' "$(truncate 15 "${OKIND[5]:-$3}")"
+			;;
 		*)
 			printf -- '%-15s ' "$(truncate 15 "$3")"
 			;;
@@ -86,11 +92,14 @@ report_header() {
 		printf -- '%-15s ' 'RESPONSE'
 		printf -- '\n'
 	} |
-
-	sed 's/^/\x1b[46;37;1m/;s/$/\x1b[m/'
+	sed '
+	{
+		s/^/\x1b[46;37;1m/
+		s/$/\x1b[m/
+	}'
 }
 
-proceed() {
+service() {
 	[ "$KIND" -a "$METADATA_NAME" -a "$SPEC_ZONE" ] && {
 		case "$HOST" in
 		*.[0-9]*)
@@ -118,7 +127,6 @@ proceed() {
 				RESPONSE_TEXT=$(response_domain_text $ADDRESS)
 				;;
 			esac
-
 			case "$RESPONSE" in
 			'127.0.'?*)
 				STATUS='Listed'
@@ -130,37 +138,53 @@ proceed() {
 				STATUS='Unknown'
 				;;
 			esac
-
 			report "$HOST" "$SPEC_TYPE" "$KIND" "$METADATA_NAME" "$STATUS" "$RESPONSE" "$RESPONSE_TEXT" |
-
 			case "$STATUS" in
 			'Listed')
 				case "$KIND" in
-				'InformativeList')
-					sed 's/^/\x1b[44;37m/;s/$/\x1b[m/'
+				'InformativeList' | 'InformationalList')
+					sed '
+					1{
+						s/^/\x1b[44;37m/
+						s/$/\x1b[m/
+					}
+					2{
+						s/^/\x1b[44;32m/
+						s/$/\x1b[m/
+					}'
 					;;
 				'ReputationList')
-					sed 's/^/\x1b[43;30m/;s/$/\x1b[m/'
+					sed '
+					{
+						s/^/\x1b[43;30m/
+						s/$/\x1b[m/
+					}'
 					;;
 				'BlackholeList' | 'BlockList' | 'BlackList')
-					sed 's/^/\x1b[41;37m/;s/$/\x1b[m/'
+					sed '
+					{
+						s/^/\x1b[41;37m/
+						s/$/\x1b[m/
+					}'
 					;;
 				esac
 				;;
 			*)
-				sed 's/^/\x1b[47;30m/;s/$/\x1b[m/'
+				sed '
+				{
+					s/^/\x1b[47;30m/
+					s/$/\x1b[m/
+				}'
 				;;
 			esac
 		done
 	}
-
+	SPEC_TYPE=$SPEC_TYPE_DEFAULT
 	unset NODE
 	unset KIND
 	unset METADATA_DESCRIPTION
 	unset METADATA_NAME
 	unset SPEC_ZONE
-
-	SPEC_TYPE=$SPEC_TYPE_DEFAULT
 }
 
 kind() {
@@ -207,7 +231,7 @@ type() {
 }
 
 error() {
-	echo "$PROGRAM: $@" >&2
+	printf -- '%s: %s\n' "$PROGRAM" "$@" >&2
 	exit 1
 }
 
@@ -240,21 +264,36 @@ while [ $# -gt 0 ]; do
 		'-okind:InformativeList:'?*)
 			OKIND[3]="${OPTION#-okind:InformativeList:}"
 			;;
+		'-okind:InformationalList:'?*)
+			OKIND[4]="${OPTION#-okind:InformationalList:}"
+			;;
+		'-okind:ReputationList:'?*)
+			OKIND[5]="${OPTION#-okind:ReputationList:}"
+			;;
+		'-okind'*)
+			error 'option -o requires an argument'
+			;;
 		*)
 			shift
 			[ $# -lt 1 ] && error 'option -o requires an argument'
 			case "$1" in
-			'kind:BlackholeList'?*)
+			'kind:BlackholeList:'?*)
 				OKIND[0]="${1#kind:BlackholeList:}"
 				;;
-			'kind:BlockList'?*)
+			'kind:BlockList:'?*)
 				OKIND[1]="${1#kind:BlockList:}"
 				;;
-			'kind:BlackList'?*)
+			'kind:BlackList:'?*)
 				OKIND[2]="${1#kind:BlackList:}"
 				;;
-			'kind:InformativeList'?*)
+			'kind:InformativeList:'?*)
 				OKIND[3]="${1#kind:InformativeList:}"
+				;;
+			'kind:InformationalList:'?*)
+				OKIND[4]="${1#kind:InformationalList:}"
+				;;
+			'kind:ReputationList:'?*)
+				OKIND[5]="${1#kind:ReputationList:}"
 				;;
 			esac
 		esac
@@ -287,6 +326,6 @@ for HOST in ${HOSTS[@]}; do
 	for FILE in ${FILES[@]}; do
 		source "$PWD/$FILE"
 	done
-	proceed
-	echo
+	service
+	printf -- '\n'
 done

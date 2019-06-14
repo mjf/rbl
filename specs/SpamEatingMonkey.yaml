@@ -1,0 +1,85 @@
+---
+kind: BlackList
+metadata:
+  description: List includes all IPs that send mail to a spamtrap address with a NULL sender
+  name: SEM-BACKSCATTER
+spec:
+  queryZone: backscatter.spameatingmonkey.net
+---
+kind: BlackList
+metadata:
+  description: List includes all IPs sending mail to a spamtrap or that have been listed by policy
+  name: SEM-BLACK
+spec:
+  queryZone: bl.spameatingmonkey.net
+---
+kind: BlackList
+metadata:
+  description: List includes domains never seen before \(typically registered in the last 24 hours\)
+  name: SEM-FRESHZERO
+spec:
+  queryZone: freshzero.spameatingmonkey.net
+  type: Domain
+---
+kind: BlackList
+metadata:
+  description: List includes domains first registered in the last 5 days
+  name: SEM-FRESH
+spec:
+  queryZone: fresh.spameatingmonkey.net
+  type: Domain
+---
+kind: BlackList
+metadata:
+  description: List includes domains first registered in the last 10 days
+  name: SEM-FRESH10
+spec:
+  queryZone: fresh10.spameatingmonkey.net
+  type: Domain
+---
+kind: BlackList
+metadata:
+  description: List includes domains first registered in the last 15 days
+  name: SEM-FRESH15
+spec:
+  queryZone: fresh15.spameatingmonkey.net
+  type: Domain
+---
+kind: BlackList
+metadata:
+  description: List includes domains first registered in the last 30 days
+  name: SEM-FRESH30
+spec:
+  queryZone: fresh30.spameatingmonkey.net
+  type: Domain
+---
+kind: BlackList
+metadata:
+  description: List includes networks identified as having a low reputation
+  name: SEM-NETBLACK
+spec:
+  queryZone: netbl.spameatingmonkey.net
+  type: Domain
+---
+kind: BlackList
+metadata:
+  description: List includes domains and URIs detected in mail sent to a spamtrap
+  name: SEM-URI
+spec:
+  queryZone: uribl.spameatingmonkey.net
+  type: Domain
+---
+kind: BlackList
+metadata:
+  description: List includes domains and URIs identified as high-probability candidates for inclusion in SEM-URI
+  name: SEM-URIRED
+spec:
+  queryZone: urired.spameatingmonkey.net
+  type: Domain
+---
+kind: InformationalList
+metadata:
+  description: Identifies the ASN, AS Owner, and advertised route for an IP
+  name: SEM-ASN-ORIGIN
+spec:
+  queryZone: origin.asn.spameatingmonkey.net

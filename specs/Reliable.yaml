@@ -1,209 +1,171 @@
-# kind: BlackList | WhiteList | YellowList | GreyList | NoBLList | ReputationList
-# spec.type: Domain | Address (default)
----
-kind: BlackList
-metadata:
-  description: The Spamhaus SBL Advisory
-  name: spamhaus-sbl
-spec:
-  zone: sbl.spamhaus.com
----
-kind: BlackList
-metadata:
-  description: The Spamhaus PBL Advisory
-  name: spamhaus-pbl
-spec:
-  zone: pbl.spamhaus.com
----
-kind: BlackList
-metadata:
-  description: The Spamhaus XBL Advisory
-  name: spamhaus-xbl
-spec:
-  zone: xbl.spamhaus.com
----
-kind: BlackList
-metadata:
-  description: The Spamhaus Zen Block List
-  name: spamhaus-zen
-spec:
-  zone: zen.spamhaus.com
----
-kind: BlackList
-metadata:
-  description: The Spamhaus DBL Advisory
-  name: spamhaus-dbl
-spec:
-  zone: dbl.spamhaus.com
-  type: Domain
 ---
 kind: BlackList
 metadata:
   description: The SpamCop Block List
-  name: scbl
+  name: SCBL
 spec:
-  zone: bl.spamcop.net
+  queryZone: bl.spamcop.net
 ---
 kind: BlackList
 metadata:
   description: The Passive Block List
-  name: psbl
+  name: PSBL
 spec:
-  zone: psbl.surriel.com
+  queryZone: psbl.surriel.com
 ---
 kind: BlackList
 metadata:
   description: The BarracudaCentral Block List
-  name: barracuda
+  name: BARRACUDA
 spec:
-  zone: b.barracudacentral.org
+  queryZone: b.barracudacentral.org
 ---
 kind: BlackList
 metadata:
   description: The Lashback\'s Block List
-  name: unsubscore
+  name: UNSUBSCORE
 spec:
-  zone: ubl.unsubscore.com
+  queryZone: ubl.unsubscore.com
 ---
 kind: BlackList
 metadata:
   description: The UCEPROTECT Level 1 Block List
-  name: uceprotect-l1
+  name: UCEPROTECT-L1
 spec:
-  zone: dnsbl-1.uceprotect.net
+  queryZone: dnsbl-1.uceprotect.net
 ---
 kind: BlackList
 metadata:
   description: The UCEPROTECT Level 2 Block List
-  name: uceprotect-l2
+  name: UCEPROTECT-L2
 spec:
-  zone: dnsbl-2.uceprotect.net
+  queryZone: dnsbl-2.uceprotect.net
 ---
 kind: BlackList
 metadata:
   description: The UCEPROTECT Level 3 Block List
-  name: uceprotect-l3
+  name: UCEPROTECT-L3
 spec:
-  zone: dnsbl-3.uceprotect.net
+  queryZone: dnsbl-3.uceprotect.net
 ---
 kind: BlackList
 metadata:
   description: The Composite Block List
-  name: cbl
+  name: CBL
 spec:
-  zone: cbl.abuseat.org
+  queryZone: cbl.abuseat.org
 ---
 kind: BlackList
 metadata:
   description: The SenderScore Block List
-  name: scbl
+  name: SCBL
 spec:
-  zone: bl.score.senderscore.com
+  queryZone: bl.score.senderscore.com
 ---
 kind: ReputationList
 metadata:
   description: The Sender Score Reputation List
-  name: scbl-rep
+  name: SCBL-REP
 spec:
-  zone: score.senderscore.com
+  queryZone: score.senderscore.com
 ---
 kind: BlackList
 metadata:
   description: The Spam Eating Monkey Block List
-  name: sembl
+  name: SEMBL
 spec:
-  zone: bl.spameatingmonkey.net
+  queryZone: bl.spameatingmonkey.net
 ---
 kind: BlackList
 metadata:
   description: The ARM Research Labs GDUdb Block List
-  name: truncate
+  name: TRUNCATE
 spec:
-  zone: truncate.gbudb.net
+  queryZone: truncate.gbudb.net
 ---
 kind: BlackList
 metadata:
   description: The SORBS Aggregated Block List
-  name: sorbs-dnsbl
+  name: SORBS-DNSBL
 spec:
-  zone: dnsbl.sorbs.net
+  queryZone: dnsbl.sorbs.net
 ---
 kind: BlackList
 metadata:
   description: The SORBS DBL
-  name: sorbs-rhsbl
+  name: SORBS-RHSBL
 spec:
-  zone: rhsbl.sorbs.net
+  queryZone: rhsbl.sorbs.net
   type: Domain
 ---
 kind: BlackList
 metadata:
   description: The NordSpam Project Block List
-  name: nordspam-bl
+  name: NORDSPAM-BL
 spec:
-  zone: bl.nordspam.com
+  queryZone: bl.nordspam.com
 ---
 kind: BlackList
 metadata:
   description: The NordSpam Project Domain Block List
-  name: nordspam-dbl
+  name: NORDSPAM-DBL
 spec:
-  zone: dbl.nordspam.com
+  queryZone: dbl.nordspam.com
   type: Domain
 ---
 kind: BlackList
 metadata:
   description: The Team Cymru Bogons Block List
-  name: cymru-bogons
+  name: CYMRU-BOGONS
 spec:
-  zone: bogons.cymru.com
+  queryZone: bogons.cymru.com
 ---
 kind: BlackList
 metadata:
   description: The Team Cymru Full Bogons Block List
-  name: cymru-fullbogons
+  name: CYMRU-FULLBOGONS
 spec:
-  zone: v4.fullbogons.cymru.com
+  queryZone: v4.fullbogons.cymru.com
 ---
 kind: BlackList
 metadata:
   description: The Host Karma Block List
-  name: hostkarma
+  name: HOSTKARMA
 spec:
-  zone: black.junkemailfilter.com
+  queryZone: black.junkemailfilter.com
 ---
 kind: BlackList
 metadata:
   description: The Host Karma Block List
-  name: hostkarma-dbl
+  name: HOSTKARMA-DBL
 spec:
-  zone: black.junkemailfilter.com
+  queryZone: black.junkemailfilter.com
   type: Domain
 ---
 kind: BlackList
 metadata:
   description: The Just Spam Block List
-  name: justspam
+  name: JUSTSPAM
 spec:
-  zone: dnsbl.justspam.org
+  queryZone: dnsbl.justspam.org
 ---
 kind: BlackList
 metadata:
   description: The Mail Spike Block List
-  name: mailspike
+  name: MAILSPIKE
 spec:
-  zone: bl.mailspike.net
+  queryZone: bl.mailspike.net
 ---
 kind: BlackList
 metadata:
   description: The Mail Spike Zero-hour Block List
-  name: mailspike-0h
+  name: MAILSPIKE-0H
 spec:
-  zone: z.mailspike.net
+  queryZone: z.mailspike.net
 ---
 kind: BlackList
 metadata:
   description: The Mega RBL Block List
-  name: megarbl
+  name: MEGARBL
 spec:
-  zone: rbl.megarbl.net
+  queryZone: rbl.megarbl.net
