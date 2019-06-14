@@ -22,3 +22,29 @@ spec:
     | "Domain"
     | "Address"
 ```
+
+## Example
+
+```yaml
+---
+kind: BlackList
+metadata:
+  description: The Spamhaus SBL Advisory
+  name: SPAMHAUS-SBL
+spec:
+  queryZone: sbl.spamhaus.com
+```
+
+# RBL Specification Shell Format
+
+## Example
+
+```shell
+service
+  kind BlackList
+  metadata
+    description The Spamhaus SBL Advisory
+    name SPAMHAUS-SBL
+  spec
+    queryZone sbl.spamhaus.com
+```
