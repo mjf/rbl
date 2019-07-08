@@ -17,7 +17,7 @@ metadata:
   description: #<string>
   name: #<string>
 spec:
-  queryDomain: #<string>
+  queryZone: #<string>
   type: > #<string>
     | "Domain"
     | "Address"
