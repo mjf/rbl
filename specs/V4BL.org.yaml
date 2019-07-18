@@ -1,0 +1,7 @@
+---
+kind: BlackList
+metadata:
+  description: The V4BL SMTP IPv4 DNS Block List
+  name: V4BL
+spec:
+  queryZone: free.v4bl.org
