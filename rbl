@@ -78,7 +78,8 @@ report() {
 	printf -- '%-15s ' "$(truncate 15 "$6")"
 	printf -- '\n'
 	[ "$7" ] && {
-		printf -- '% 23s %-72s\n' '' "$7"
+		t="$(tr '\n' ' ' <<< "$7" |tr -d '\r')"
+		printf -- '% 23s %-72s\n' '' "$(truncate 72 "$t")"
 	}
 }
 
