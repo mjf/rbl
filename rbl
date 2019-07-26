@@ -79,7 +79,7 @@ report() {
 	printf -- '\n'
 	[ "$7" ] && {
 		t="$(tr '\n' ' ' <<< "$7" |tr -d '\r')"
-		printf -- '% 23s %-72s\n' '' "$(truncate 72 "$t")"
+		printf -- '% 23s %-72s\n' '->' "$(truncate 72 "$t")"
 	}
 }
 
@@ -316,8 +316,8 @@ while [ $# -gt 0 ]; do
 	shift
 done
 
-[ ${#FILES[@]} -eq 0 ] && error 'source file(s) required'
-[ ${#HOSTS[@]} -eq 0 ] && error 'host(s) required'
+[ ${#FILES[@]} -eq 0 ] && error 'source file(s) required; use: -f<file>'
+[ ${#HOSTS[@]} -eq 0 ] && error 'host(s) required; use: <host>[,<host>...]'
 
 SPEC_TYPE_DEFAULT='Address'
 SPEC_TYPE=$SPEC_TYPE_DEFAULT
