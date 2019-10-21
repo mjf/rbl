@@ -162,10 +162,3 @@ metadata:
   name: MAILSPIKE-0H
 spec:
   queryZone: z.mailspike.net
----
-kind: BlackList
-metadata:
-  description: The Mega RBL Block List
-  name: MEGARBL
-spec:
-  queryZone: rbl.megarbl.net
