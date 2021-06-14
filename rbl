@@ -1,5 +1,9 @@
 #! /bin/sh
 
+# rbl - Check a list of hosts against specified RBL services
+# Copyright (C) 2020-2021 Matouš Jan Fialka, <https://mjf.cz/>
+# Released under the terms of the "MIT License"
+
 PROGRAM="${0##*/}"
 
 alias -- '---'='service'
